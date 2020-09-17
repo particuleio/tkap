@@ -23,7 +23,8 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_wrapper: true
-        terraform_version: 0.13.2
+        terraform_version: 0.13.3
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
     - name: 'terraform:fmt:kapsule'
       run: terraform fmt -check
