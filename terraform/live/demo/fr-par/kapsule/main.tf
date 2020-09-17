@@ -6,7 +6,7 @@ module "kapsule" {
   node_pools = {
     tkap = {
       size        = 2
-      max_size    = 4
+      max_size    = 5
       min_size    = 1
       autoscaling = true
     }
