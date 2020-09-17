@@ -10,7 +10,7 @@ on:
 
 jobs:
   terraform:
-    name: 'terragrunt:env:demo'
+    name: 'terraform:env:demo'
     runs-on: ubuntu-latest
     steps:
     - name: checkout
