@@ -28,7 +28,7 @@ jobs:
 
     - name: 'terraform:fmt:kapsule'
       run: terraform fmt -check
-      working-directory: terraform/live/demo/fr-par/kapsule
+      working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -40,7 +40,7 @@ jobs:
 
     - name: 'terraform:init:kapsule'
       run: terraform init
-      working-directory: terraform/live/demo/fr-par/kapsule
+      working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -52,7 +52,7 @@ jobs:
 
     - name: 'terraform:plan:kapsule'
       run: terraform plan
-      working-directory: terraform/live/demo/fr-par/kapsule
+      working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -64,7 +64,7 @@ jobs:
 
     - name: 'terraform:apply:kapsule'
       run: terraform apply -auto-approve
-      working-directory: terraform/live/demo/fr-par/kapsule
+      working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -76,7 +76,7 @@ jobs:
 
     - name: 'terraform:destroy:kapsule'
       run: terraform destroy -auto-approve
-      working-directory: terraform/live/demo/fr-par/kapsule
+      working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
       if: "!contains(github.event.head_commit.message, 'ci keep')"
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
