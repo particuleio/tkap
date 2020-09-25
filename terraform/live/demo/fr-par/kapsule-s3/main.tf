@@ -4,6 +4,7 @@ module "kapsule" {
   cluster_name        = "tkap-s3"
   cluster_description = "tkap-s3"
   admission_plugins   = ["PodSecurityPolicy"]
+  kubernetes_version  = "1.19.2"
 
   node_pools = {
     tkap = {
