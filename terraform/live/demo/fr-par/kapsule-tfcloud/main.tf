@@ -9,7 +9,7 @@ module "kapsule" {
     tkap = {
       size        = 2
       max_size    = 5
-      min_size    = 1
+      min_size    = 2
       autoscaling = true
     }
   }

@@ -13,6 +13,17 @@ jobs:
     name: 'terraform:env:demo'
     runs-on: ubuntu-latest
     steps:
+    - name: 'slack:start'
+      if: success()
+      id: slack
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel: clusterfrak-dynamics
+        status: STARTING
+        color: warning
+
     - name: checkout
       uses: actions/checkout@v2
 
@@ -87,3 +98,25 @@ jobs:
         SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
         SCW_DEFAULT_REGION: fr-par
         SCW_DEFAULT_ZONE: fr-par-1
+
+    - name: 'slack:success'
+      if: success()
+      id: slack
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel: clusterfrak-dynamics
+        status: SUCCESS
+        color: good
+
+    - name: 'slack:failure'
+      if: failure()
+      id: slack
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel: clusterfrak-dynamics
+        status: failure
+        color: danger
