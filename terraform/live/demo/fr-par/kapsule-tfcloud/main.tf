@@ -2,6 +2,7 @@ module "kapsule" {
   source              = "github.com/clusterfrak-dynamics/terraform-scaleway-kapsule?ref=v1.0.0"
   cluster_name        = "tkap"
   cluster_description = "tkap"
+  admission_plugins   = ["PodSecurityPolicy"]
 
   node_pools = {
     tkap = {
@@ -11,4 +12,8 @@ module "kapsule" {
       autoscaling = true
     }
   }
+}
+
+output "kubeconfig" {
+  value = module.kapsule.kubeconfig[0]["config_file"]
 }
