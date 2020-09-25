@@ -90,6 +90,7 @@ jobs:
       run: terraform destroy -auto-approve
       working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
       if: "!contains(github.event.head_commit.message, 'ci keep') && github.ref == 'refs/heads/master'"
+      continue-on-error: true
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -98,6 +99,12 @@ jobs:
         SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
         SCW_DEFAULT_REGION: fr-par
         SCW_DEFAULT_ZONE: fr-par-1
+
+    - name: 'terraform:destroy:kapsule:cleanup-stale-state'
+      run: terraform state list 2>/dev/null | xargs terraform state rm
+      working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
+      continue-on-error: true
+      if: "!contains(github.event.head_commit.message, 'ci keep') && github.ref == 'refs/heads/master'"
 
     - name: 'slack:success'
       if: success()
