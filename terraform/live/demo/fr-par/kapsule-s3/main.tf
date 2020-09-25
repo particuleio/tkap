@@ -1,5 +1,6 @@
 module "kapsule" {
-  source              = "github.com/clusterfrak-dynamics/terraform-scaleway-kapsule?ref=v1.0.0"
+  source              = "clusterfrak-dynamics/kapsule/scaleway"
+  version             = "~> 1.0"
   cluster_name        = "tkap-s3"
   cluster_description = "tkap-s3"
   admission_plugins   = ["PodSecurityPolicy"]
@@ -12,6 +13,12 @@ module "kapsule" {
       autoscaling = true
     }
   }
+}
+
+module "psp" {
+  source     = "clusterfrak-dynamics/psp/kubernetes"
+  version    = "~> 1.0"
+  depends_on = [module.kapsule]
 }
 
 output "kubeconfig" {
