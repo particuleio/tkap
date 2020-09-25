@@ -1,7 +1,7 @@
 module "kapsule" {
   source              = "github.com/clusterfrak-dynamics/terraform-scaleway-kapsule?ref=v1.0.0"
-  cluster_name        = "tkap"
-  cluster_description = "tkap"
+  cluster_name        = "tkap-tfcloud"
+  cluster_description = "tkap-tfcloud"
   admission_plugins   = ["PodSecurityPolicy"]
 
   node_pools = {
