@@ -16,4 +16,6 @@ module "cert-manager" {
       installCRDs: true
     EOF
   }
+
+  depends_on = [module.kapsule]
 }
