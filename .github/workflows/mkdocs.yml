@@ -12,7 +12,7 @@ on:
 
 jobs:
   terraform:
-    name: 'teks:mkdocs'
+    name: 'tkap:mkdocs'
     runs-on: ubuntu-latest
     steps:
     - name: 'slack:start'

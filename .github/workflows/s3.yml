@@ -1,4 +1,4 @@
-name: 'terraform:env:demo:s3'
+name: 'tkap:terraform:env:demo:s3'
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   terraform:
-    name: 'terraform:env:demo'
+    name: 'tkap:terraform:env:demo:s3'
     runs-on: ubuntu-latest
     steps:
     - name: 'slack:start'
