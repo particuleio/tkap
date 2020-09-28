@@ -1,5 +1,5 @@
 module "kapsule" {
-  source              = "clusterfrak-dynamics/kapsule/scaleway"
+  source              = "particuleio/kapsule/scaleway"
   version             = "~> 1.0"
   cluster_name        = "tkap-s3"
   cluster_description = "tkap-s3"
@@ -17,7 +17,7 @@ module "kapsule" {
 }
 
 module "psp" {
-  source     = "clusterfrak-dynamics/psp/kubernetes"
+  source     = "particuleio/psp/kubernetes"
   version    = "~> 1.0"
   depends_on = [module.kapsule]
 }

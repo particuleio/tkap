@@ -1,6 +1,6 @@
 terraform {
   backend "remote" {
-    organization = "clusterfrak-dynamics"
+    organization = "particule"
 
     workspaces {
       name = "tkap"

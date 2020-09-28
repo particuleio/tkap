@@ -1,5 +1,5 @@
 module "cert-manager" {
-  source  = "clusterfrak-dynamics/release/helm"
+  source  = "particuleio/release/helm"
   version = "~> 1.0"
 
   release = {

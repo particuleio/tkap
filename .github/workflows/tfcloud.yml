@@ -6,6 +6,7 @@ on:
     - master
     paths:
     - 'terraform/live/demo/**'
+    - '.github/workflows/tfcloud.yml'
   pull_request:
 
 jobs:
@@ -20,7 +21,7 @@ jobs:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       uses: voxmedia/github-action-slack-notify-build@v1
       with:
-        channel: clusterfrak-dynamics
+        channel: notifications
         status: STARTING
         color: warning
 
@@ -112,7 +113,7 @@ jobs:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       uses: voxmedia/github-action-slack-notify-build@v1
       with:
-        channel: clusterfrak-dynamics
+        channel: notifications
         status: SUCCESS
         color: good
 
@@ -122,6 +123,6 @@ jobs:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       uses: voxmedia/github-action-slack-notify-build@v1
       with:
-        channel: clusterfrak-dynamics
+        channel: notifications
         status: failure
         color: danger

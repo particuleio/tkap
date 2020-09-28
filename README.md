@@ -6,6 +6,7 @@
 
 ![terraform:env:demo:tfcloud](https://github.com/particuleio/tkap/workflows/terraform:env:demo:tfcloud/badge.svg)
 ![terraform:env:demo:s3](https://github.com/particuleio/tkap/workflows/terraform:env:demo:s3/badge.svg)
+![tkap:mkdocs](https://github.com/particuleio/tkap/workflows/tkap:mkdocs/badge.svg)
 
 tKAP is a set of Terraform / Terragrunt modules designed to get you everything
 you need to run a production Kapsule cluster on Scaleway Element. It ships with

@@ -8,12 +8,24 @@ on:
     - 'docs/**'
     - 'mkdocs.yml'
     - 'README.md'
+    - '.github/workflows/mkdocs.yml'
 
 jobs:
   terraform:
     name: 'teks:mkdocs'
     runs-on: ubuntu-latest
     steps:
+    - name: 'slack:start'
+      if: success()
+      id: slack
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel: notifications
+        status: STARTING
+        color: warning
+
     - name: checkout
       uses: actions/checkout@v2
 
@@ -22,3 +34,23 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         REQUIREMENTS: docs/requirements.txt
+
+    - name: 'slack:success'
+      if: success()
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel: notifications
+        status: SUCCESS
+        color: good
+
+    - name: 'slack:failure'
+      if: failure()
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel: notifications
+        status: failure
+        color: danger
