@@ -15,16 +15,10 @@ jobs:
     name: 'tkap:mkdocs'
     runs-on: ubuntu-latest
     steps:
-    - name: 'slack:start'
-      if: success()
-      id: slack
-      env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      uses: voxmedia/github-action-slack-notify-build@v1
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.5.0
       with:
-        channel: notifications
-        status: STARTING
-        color: warning
+        access_token: ${{ github.token }}
 
     - name: checkout
       uses: actions/checkout@v2

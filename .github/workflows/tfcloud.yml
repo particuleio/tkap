@@ -5,7 +5,7 @@ on:
     branches:
     - master
     paths:
-    - 'terraform/live/demo/**'
+    - 'terraform/live/demo/fr-par/kapsule-tfcloud'
     - '.github/workflows/tfcloud.yml'
   pull_request:
 
@@ -14,16 +14,10 @@ jobs:
     name: 'tkap:terraform:env:demo:tfcloud'
     runs-on: ubuntu-latest
     steps:
-    - name: 'slack:start'
-      if: success()
-      id: slack
-      env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      uses: voxmedia/github-action-slack-notify-build@v1
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.5.0
       with:
-        channel: notifications
-        status: STARTING
-        color: warning
+        access_token: ${{ github.token }}
 
     - name: checkout
       uses: actions/checkout@v2
@@ -90,7 +84,7 @@ jobs:
     - name: 'terraform:destroy:kapsule'
       run: terraform destroy -auto-approve
       working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
-      if: "!contains(github.event.head_commit.message, 'ci keep') && github.ref == 'refs/heads/master'"
+      if: "!contains(github.event.head_commit.message, '[ci keep]') && github.ref == 'refs/heads/master'"
       continue-on-error: true
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -105,7 +99,7 @@ jobs:
       run: terraform state list 2>/dev/null | xargs terraform state rm
       working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
       continue-on-error: true
-      if: "!contains(github.event.head_commit.message, 'ci keep') && github.ref == 'refs/heads/master'"
+      if: "!contains(github.event.head_commit.message, '[ci keep]') && github.ref == 'refs/heads/master'"
 
     - name: 'slack:success'
       if: success()
