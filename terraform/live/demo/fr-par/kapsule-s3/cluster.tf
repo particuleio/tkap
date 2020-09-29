@@ -6,12 +6,13 @@ module "kapsule" {
   admission_plugins   = ["PodSecurityPolicy"]
   kubernetes_version  = "1.19.2"
 
-  node_pools = {
-    tkap = {
-      size        = 2
-      max_size    = 5
-      min_size    = 2
-      autoscaling = true
+  node_pools              = {
+    tkap                  = {
+      size                = 3
+      max_size            = 5
+      min_size            = 3
+      autoscaling         = true
+      wait_for_pool_ready = true
     }
   }
 }
