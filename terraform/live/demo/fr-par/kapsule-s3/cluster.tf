@@ -6,8 +6,8 @@ module "kapsule" {
   admission_plugins   = ["PodSecurityPolicy"]
   kubernetes_version  = "1.19.2"
 
-  node_pools              = {
-    tkap                  = {
+  node_pools = {
+    tkap = {
       size                = 3
       max_size            = 5
       min_size            = 3

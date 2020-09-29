@@ -2,7 +2,7 @@ module "ingress-nginx" {
   source  = "particuleio/release/helm"
   version = "~> 1.0"
 
-  release         = {
+  release = {
     name          = "ingress-nginx"
     namespace     = "ingress-nginx"
     force_update  = true
@@ -53,7 +53,7 @@ module "rook" {
   source  = "particuleio/release/helm"
   version = "~> 1.0"
 
-  release         = {
+  release = {
     name          = "rook-ceph"
     namespace     = "rook-ceph"
     chart         = "rook-ceph"
@@ -68,7 +68,7 @@ module "sealed-secrets" {
   source  = "particuleio/release/helm"
   version = "~> 1.0"
 
-  release         = {
+  release = {
     name          = "sealed-secrets"
     namespace     = "sealed-secrets"
     chart         = "sealed-secrets"
@@ -83,7 +83,7 @@ module "external-dns" {
   source  = "particuleio/release/helm"
   version = "~> 1.0"
 
-  release         = {
+  release = {
     name          = "external-dns"
     namespace     = "external-dns"
     chart         = "external-dns"
@@ -129,13 +129,13 @@ module "kube-prometheus-stack" {
   source  = "particuleio/release/helm"
   version = "~> 1.0"
 
-  release         = {
+  release = {
     name          = "kube-prometheus-stack"
     namespace     = "monitoring"
     chart         = "kube-prometheus-stack"
     repository    = "https://prometheus-community.github.io/helm-charts"
     chart_version = "9.4.4"
-    values = <<-EOT
+    values        = <<-EOT
       kubeScheduler:
         enabled: false
       kubeControllerManager:
