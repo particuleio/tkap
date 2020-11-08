@@ -3,8 +3,7 @@ module "kapsule" {
   version             = "~> 1.0"
   cluster_name        = "tkap-tfcloud"
   cluster_description = "tkap-tfcloud"
-  admission_plugins   = ["PodSecurityPolicy"]
-  kubernetes_version  = "1.19.2"
+  kubernetes_version  = "1.19.3"
 
   node_pools = {
     tkap = {
@@ -14,12 +13,6 @@ module "kapsule" {
       autoscaling = true
     }
   }
-}
-
-module "psp" {
-  source     = "particuleio/psp/kubernetes"
-  version    = "~> 1.0"
-  depends_on = [module.kapsule]
 }
 
 output "kubeconfig" {
