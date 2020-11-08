@@ -1,5 +1,6 @@
 module "addons" {
   source     = "particuleio/addons/kubernetes//modules/scaleway"
+  version    = "~> 1.0"
   depends_on = [module.kapsule]
 
   ingress-nginx = {
