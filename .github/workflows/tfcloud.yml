@@ -5,7 +5,7 @@ on:
     branches:
     - master
     paths:
-    - 'terraform/live/demo/fr-par/kapsule-tfcloud'
+    - 'terraform/live/demo/fr-par/kapsule-tfcloud/**'
     - '.github/workflows/tfcloud.yml'
   pull_request:
 
