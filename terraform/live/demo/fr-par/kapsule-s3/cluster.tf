@@ -3,8 +3,7 @@ module "kapsule" {
   version             = "~> 1.0"
   cluster_name        = "tkap-s3"
   cluster_description = "tkap-s3"
-  admission_plugins   = ["PodSecurityPolicy"]
-  kubernetes_version  = "1.19.2"
+  kubernetes_version  = "1.19.3"
 
   node_pools = {
     tkap = {
@@ -15,12 +14,6 @@ module "kapsule" {
       wait_for_pool_ready = true
     }
   }
-}
-
-module "psp" {
-  source     = "particuleio/psp/kubernetes"
-  version    = "~> 1.0"
-  depends_on = [module.kapsule]
 }
 
 output "kubeconfig" {
