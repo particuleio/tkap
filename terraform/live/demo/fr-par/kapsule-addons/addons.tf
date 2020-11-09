@@ -31,11 +31,11 @@ module "addons" {
             kubernetes.io/ingress.class: nginx
             cert-manager.io/cluster-issuer: "letsencrypt"
           hosts:
-            - grafana.particule.cloud
+            - grafana.scw.particule.cloud
           tls:
-            - secretName: grafana-particule-cloud
+            - secretName: grafana.scw.particule.cloud
               hosts:
-                - grafana.particule.cloud
+                - grafana.scw.particule.cloud
         persistence:
           enabled: true
           storageClassName: scw-bssd
@@ -81,11 +81,11 @@ module "addons" {
           kubernetes.io/ingress.class: nginx
           cert-manager.io/cluster-issuer: "letsencrypt"
         hosts:
-          - karma.particule.cloud
+          - karma.scw.particule.cloud
         tls:
-          - secretName: karma-particule-cloud
+          - secretName: karma.scw.particule.cloud
             hosts:
-              - karma.particule.cloud
+              - karma.scw.particule.cloud
       env:
         - name: ALERTMANAGER_URI
           value: "http://prometheus-operator-alertmanager.monitoring.svc.cluster.local:9093"
