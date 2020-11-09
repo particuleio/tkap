@@ -4,13 +4,15 @@ module "kapsule" {
   cluster_name        = "tkap-tfcloud"
   cluster_description = "tkap-tfcloud"
   kubernetes_version  = "1.19.3"
+  cni_plugin          = "calico"
 
   node_pools = {
     tkap = {
-      size        = 2
-      max_size    = 5
-      min_size    = 2
-      autoscaling = true
+      size                = 2
+      max_size            = 5
+      min_size            = 2
+      autoscaling         = true
+      wait_for_pool_ready = true
     }
   }
 }
