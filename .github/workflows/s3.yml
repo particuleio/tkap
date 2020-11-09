@@ -111,6 +111,7 @@ jobs:
     - name: 'terraform:destroy:kapsule:cleanup-stale-state'
       run: terraform state list 2>/dev/null | xargs terraform state rm
       working-directory: terraform/live/demo/fr-par/kapsule-s3
+      continue-on-error: true
       if: "!contains(github.event.head_commit.message, '[ci keep]') && github.ref == 'refs/heads/master'"
 
     - name: 'slack:success'
