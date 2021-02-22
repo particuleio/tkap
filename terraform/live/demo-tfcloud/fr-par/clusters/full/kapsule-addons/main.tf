@@ -1,5 +1,5 @@
 locals {
-  cluster_name          = "${local.prefix}-${local.env}-s3"
+  cluster_name          = "${local.prefix}-${local.env}"
   default_domain_name   = yamldecode(file("../../../../../global_values.yaml"))["default_domain_name"]
   default_domain_suffix = "${local.custom_tags["Env"]}.${local.custom_tags["Project"]}.${local.default_domain_name}"
 }
@@ -25,16 +25,15 @@ provider "helm" {
   }
 }
 
-
 module "eks-addons" {
   source = "particuleio/addons/kubernetes//modules/scaleway"
 
   cluster-name = local.cluster_name
 
   scaleway = {
-    scw_access_key              = "MYAK"
-    scw_secret_key              = "MYSK"
-    scw_default_organization_id = "MYORG"
+    scw_access_key              = local.scw_access_key
+    scw_secret_key              = local.scw_secret_key
+    scw_default_organization_id = local.scw_default_organization_id
   }
 
   cert-manager = {
@@ -47,7 +46,14 @@ module "eks-addons" {
   }
 
   external-dns = {
-    enabled = true
+    enabled      = true
+    version      = "v20210219-v0.7.6-75-gabbd2ef8-amd64"
+    extra_values = <<-EXTRA_VALUES
+    image:
+      registry: gcr.io
+      repository: k8s-staging-external-dns/external-dns
+      tag: v20210219-v0.7.6-75-gabbd2ef8-amd64
+    EXTRA_VALUES
   }
 
   ingress-nginx = {
@@ -55,11 +61,11 @@ module "eks-addons" {
   }
 
   istio-operator = {
-    enabled = false
+    enabled = true
   }
 
   karma = {
-    enabled      = false
+    enabled      = true
     extra_values = <<-EXTRA_VALUES
       ingress:
         enabled: true
@@ -92,7 +98,7 @@ module "eks-addons" {
   }
 
   kube-prometheus-stack = {
-    enabled      = false
+    enabled      = true
     extra_values = <<-EXTRA_VALUES
       grafana:
         deploymentStrategy:
@@ -132,7 +138,7 @@ module "eks-addons" {
   }
 
   sealed-secrets = {
-    enabled = false
+    enabled = true
   }
 
 }

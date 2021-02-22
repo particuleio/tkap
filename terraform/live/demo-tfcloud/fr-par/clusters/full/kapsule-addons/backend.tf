@@ -1,1 +1,9 @@
-../../../../../shared/backend.tf
+terraform {
+  backend "remote" {
+    organization = "particule"
+
+    workspaces {
+      name = "kapsule-addons"
+    }
+  }
+}

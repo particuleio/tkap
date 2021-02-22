@@ -1,5 +1,5 @@
 locals {
-  cluster_name = "${local.prefix}-${local.env}-s3"
+  cluster_name = "${local.prefix}-${local.env}"
 }
 
 module "kapsule" {
