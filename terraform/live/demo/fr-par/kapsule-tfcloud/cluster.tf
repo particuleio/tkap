@@ -3,7 +3,7 @@ module "kapsule" {
   version             = "~> 1.0"
   cluster_name        = "tkap-tfcloud"
   cluster_description = "tkap-tfcloud"
-  kubernetes_version  = "1.19.3"
+  kubernetes_version  = "1.20.2"
   cni_plugin          = "calico"
 
   node_pools = {
@@ -18,5 +18,6 @@ module "kapsule" {
 }
 
 output "kubeconfig" {
-  value = module.kapsule.kubeconfig[0]["config_file"]
+  value     = module.kapsule.kubeconfig[0]["config_file"]
+  sensitive = true
 }
