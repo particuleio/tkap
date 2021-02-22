@@ -54,6 +54,7 @@ jobs:
         eval $(direnv hook bash)
         direnv allow
         direnv status
+        eval "$(direnv export bash)"
         terraform fmt -check
       working-directory: terraform/live/demo-s3/fr-par/clusters/full/kapsule
       env:
@@ -70,6 +71,7 @@ jobs:
         eval $(direnv hook bash)
         direnv allow
         direnv status
+        eval "$(direnv export bash)"
         terraform init -input=false
       working-directory: terraform/live/demo-s3/fr-par/clusters/full/kapsule
       env:
