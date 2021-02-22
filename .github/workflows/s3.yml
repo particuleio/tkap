@@ -5,7 +5,7 @@ on:
     branches:
     - master
     paths:
-    - 'terraform/live/demo/fr-par/kapsule-s3/**'
+    - 'terraform/live/demo-s3/**'
     - '.github/workflows/s3.yml'
   pull_request:
 
@@ -24,6 +24,15 @@ jobs:
 
     - name: 'asdf:install'
       uses: asdf-vm/actions/install@v1.0.0
+
+    - name: 'direnv:install'
+      run: sudo apt-get install direnv
+
+    - name: 'tfenv:install'
+      run: |
+        mkdir -p $GITHUB_WORKSPACE/bin
+        curl -o $GITHUB_WORKSPACE/bin/tfenv https://github.com/cloudposse/tfenv/releases/download/0.4.0/tfenv_linux_amd64
+        echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
     - name: 'terraform:setup'
       uses: hashicorp/setup-terraform@v1
