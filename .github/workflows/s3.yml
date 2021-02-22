@@ -51,6 +51,7 @@ jobs:
     - name: 'terraform:fmt:kapsule'
       run: |
         direnv allow
+        direnv status
         terraform fmt -check
       working-directory: terraform/live/demo-s3/fr-par/clusters/full/kapsule
       env:
@@ -63,7 +64,10 @@ jobs:
         SCW_DEFAULT_ZONE: fr-par-1
 
     - name: 'terraform:init:kapsule'
-      run: terraform init
+      run: |
+        direnv allow
+        direnv status
+        terraform init -input=false
       working-directory: terraform/live/demo-s3/fr-par/clusters/full/kapsule
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
