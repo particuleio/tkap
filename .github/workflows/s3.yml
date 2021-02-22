@@ -41,6 +41,7 @@ jobs:
       with:
         terraform_wrapper: true
         terraform_version: 0.14.7
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
     - name: 'terraform:fmt:kapsule'
       run: |
