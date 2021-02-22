@@ -40,6 +40,7 @@ jobs:
       run: |
         mkdir -p $GITHUB_WORKSPACE/bin
         curl -o $GITHUB_WORKSPACE/bin/tfenv https://github.com/cloudposse/tfenv/releases/download/0.4.0/tfenv_linux_amd64
+        chmod +x $GITHUB_WORKSPACE/bin/tfenv
         echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
     - name: 'terraform:setup'
@@ -51,9 +52,6 @@ jobs:
 
     - name: 'terraform:fmt:kapsule'
       run: |
-        eval $(direnv hook bash)
-        direnv allow
-        direnv status
         eval "$(direnv export bash)"
         terraform fmt -check
       working-directory: terraform/live/demo-s3/fr-par/clusters/full/kapsule
@@ -68,10 +66,6 @@ jobs:
 
     - name: 'terraform:init:kapsule'
       run: |
-        eval $(direnv hook bash)
-        direnv allow
-        direnv status
-        eval "$(direnv export bash)"
         terraform init -input=false
       working-directory: terraform/live/demo-s3/fr-par/clusters/full/kapsule
       env:
