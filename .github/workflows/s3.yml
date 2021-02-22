@@ -26,7 +26,13 @@ jobs:
       uses: asdf-vm/actions/install@v1.1.0
 
     - name: 'direnv:install'
-      run: sudo apt-get install direnv
+      run: |
+        sudo apt-get install direnv
+        mkdir -p $HOME/.config/direnv
+        cat <<EOF > $HOME/.config/direnv/direnv.toml
+        [whitelist]
+        prefix = [ "$GITHUB_WORKSPACE" ]
+        EOF
 
     - name: 'tfenv:install'
       run: |
