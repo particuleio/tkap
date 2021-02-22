@@ -1,7 +1,9 @@
-terraform {
-  backend "s3" {
+data "terraform_remote_state" "kapsule" {
+  backend = "s3"
+
+  config = {
+    key                         = "${trimprefix(split("live", path.cwd)[1], "/")}/../kapsule/terraform.tfstate"
     bucket                      = "tkap-terraform-remote-state"
-    key                         = "kapsule-s3"
     region                      = "fr-par"
     endpoint                    = "https://s3.fr-par.scw.cloud"
     skip_region_validation      = true

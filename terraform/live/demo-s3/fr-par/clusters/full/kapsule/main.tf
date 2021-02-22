@@ -1,9 +1,13 @@
+locals {
+  cluster_name = "${local.prefix}-${local.env}-s3"
+}
+
 module "kapsule" {
   source              = "particuleio/kapsule/scaleway"
-  version             = "~> 1.0"
-  cluster_name        = "tkap-s3"
-  cluster_description = "tkap-s3"
-  kubernetes_version  = "1.19.3"
+  version             = "~> 2.0"
+  cluster_name        = local.cluster_name
+  cluster_description = local.cluster_name
+  kubernetes_version  = "1.20.4"
   cni_plugin          = "calico"
 
   node_pools = {
@@ -17,6 +21,7 @@ module "kapsule" {
   }
 }
 
-output "kubeconfig" {
-  value = module.kapsule.kubeconfig[0]["config_file"]
+output "kapsule" {
+  value     = module.kapsule
+  sensitive = true
 }

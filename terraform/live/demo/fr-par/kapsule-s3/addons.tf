@@ -1,1 +1,0 @@
-../kapsule-addons/addons.tf
