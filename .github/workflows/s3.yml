@@ -28,13 +28,6 @@ jobs:
     - name: 'direnv:install'
       run: |
         sudo apt-get install direnv
-        mkdir -p $HOME/.config/direnv
-        cat <<EOF > $HOME/.config/direnv/direnv.toml
-        [whitelist]
-        prefix = [ "$GITHUB_WORKSPACE" ]
-        EOF
-        which direnv
-        eval $(direnv hook bash)
 
     - name: 'tfenv:install'
       run: |
@@ -52,6 +45,7 @@ jobs:
 
     - name: 'terraform:fmt:kapsule'
       run: |
+        direnv allow
         eval "$(direnv export bash)"
         terraform fmt -check
       working-directory: terraform/live/demo-s3/fr-par/clusters/full/kapsule
@@ -66,6 +60,8 @@ jobs:
 
     - name: 'terraform:init:kapsule'
       run: |
+        direnv allow
+        eval "$(direnv export bash)"
         terraform init -input=false
       working-directory: terraform/live/demo-s3/fr-par/clusters/full/kapsule
       env:
@@ -78,7 +74,10 @@ jobs:
         SCW_DEFAULT_ZONE: fr-par-1
 
     - name: 'terraform:plan:kapsule'
-      run: terraform plan
+      run: |
+        direnv allow
+        eval "$(direnv export bash)"
+        terraform plan
       working-directory: terraform/live/demo-s3/fr-par/clusters/full/kapsule
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -90,7 +89,10 @@ jobs:
         SCW_DEFAULT_ZONE: fr-par-1
 
     - name: 'terraform:apply:kapsule'
-      run: terraform apply -auto-approve
+      run: |
+        direnv allow
+        eval "$(direnv export bash)"
+        terraform apply -auto-approve
       working-directory: terraform/live/demo-s3/fr-par/clusters/full/kapsule
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -103,7 +105,10 @@ jobs:
       if: github.ref == 'refs/heads/master'
 
     - name: 'terraform:destroy:kapsule'
-      run: terraform destroy -auto-approve
+      run: |
+        direnv allow
+        eval "$(direnv export bash)"
+        terraform destroy -auto-approve
       working-directory: terraform/live/demo-s3/fr-par/clusters/full/kapsule
       if: "!contains(github.event.head_commit.message, '[ci keep]') && github.ref == 'refs/heads/master'"
       continue-on-error: true
@@ -117,7 +122,10 @@ jobs:
         SCW_DEFAULT_ZONE: fr-par-1
 
     - name: 'terraform:destroy:kapsule:failsafe'
-      run: terraform destroy -auto-approve
+      run: |
+        direnv allow
+        eval "$(direnv export bash)"
+        terraform destroy -auto-approve
       working-directory: terraform/live/demo-s3/fr-par/clusters/full/kapsule
       if: "!contains(github.event.head_commit.message, '[ci keep]') && github.ref == 'refs/heads/master'"
       env:
@@ -130,7 +138,10 @@ jobs:
         SCW_DEFAULT_ZONE: fr-par-1
 
     - name: 'terraform:destroy:kapsule:cleanup-stale-state'
-      run: terraform state list 2>/dev/null | xargs terraform state rm
+      run: |
+        direnv allow
+        eval "$(direnv export bash)"
+        terraform state list 2>/dev/null | xargs terraform state rm
       working-directory: terraform/live/demo-s3/fr-par/clusters/full/kapsule
       continue-on-error: true
       if: "!contains(github.event.head_commit.message, '[ci keep]') && github.ref == 'refs/heads/master'"
