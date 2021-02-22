@@ -32,7 +32,7 @@ jobs:
     - name: 'tfenv:install'
       run: |
         mkdir -p $GITHUB_WORKSPACE/bin
-        curl -o $GITHUB_WORKSPACE/bin/tfenv https://github.com/cloudposse/tfenv/releases/download/0.4.0/tfenv_linux_amd64
+        curl -sLo $GITHUB_WORKSPACE/bin/tfenv https://github.com/cloudposse/tfenv/releases/download/0.4.0/tfenv_linux_amd64
         chmod +x $GITHUB_WORKSPACE/bin/tfenv
         echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
