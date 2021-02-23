@@ -3,6 +3,12 @@ module "addons" {
   version    = "~> 1.0"
   depends_on = [module.kapsule]
 
+  scaleway = {
+    scw_access_key              = "SCWX0000000000000000"
+    scw_secret_key              = "7515164c-2e75-11eb-adc1-0242ac120002"
+    scw_default_organization_id = "7515164c-2e75-11eb-adc1-0242ac120002"
+  }
+
   ingress-nginx = {
     enabled = true
   }
@@ -16,7 +22,7 @@ module "addons" {
   }
 
   external-dns = {
-    enabled = false
+    enabled = true
   }
 
   kube-prometheus-stack = {
