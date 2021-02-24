@@ -1,5 +1,6 @@
 locals {
-  cluster_name = "${local.prefix}-${local.env}"
+  name         = yamldecode(file("../cluster_values.yaml"))["name"]
+  cluster_name = "${local.prefix}-${local.env}-${local.name}"
 }
 
 module "kapsule" {

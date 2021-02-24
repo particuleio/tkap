@@ -1,5 +1,6 @@
 locals {
-  cluster_name          = "${local.prefix}-${local.env}"
+  name                  = yamldecode(file("../cluster_values.yaml"))["name"]
+  cluster_name          = "${local.prefix}-${local.env}-${local.name}"
   default_domain_name   = yamldecode(file("../../../../../global_values.yaml"))["default_domain_name"]
   default_domain_suffix = "${local.custom_tags["Env"]}.${local.custom_tags["Project"]}.${local.default_domain_name}"
 }
