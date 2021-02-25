@@ -47,8 +47,8 @@ Terraform configuration is done inside the [`live`](./terraform/live) folder.
   export SCW_DEFAULT_ORGANIZATION_ID=SCW_DEFAULT_ORGANIZATION_ID
   export SCW_DEFAULT_PROJECT_ID=SCW_DEFAULT_PROJECT_ID
 
-  export AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID
-  export AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY
+  export AWS_ACCESS_KEY_ID=$SCW_ACCESS_KEY
+  export AWS_SECRET_ACCESS_KEY=$SCW_SECRET_KEY
   ```
 
 2. source the `credentials.sh` file
