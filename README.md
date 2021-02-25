@@ -61,6 +61,18 @@ Terraform configuration is done inside the [`live`](./terraform/live) folder.
 
 3. Add your Scaleway object storage bucket name in [`./terraform/live/shared/backend.tf`](./terraform/live/shared/backend.tf)
 
+  ```hcl
+  terraform {
+    backend "s3" {
+      bucket                      = "tkap-terraform-remote-state"
+      region                      = "fr-par"
+      endpoint                    = "https://s3.fr-par.scw.cloud"
+      skip_region_validation      = true
+      skip_credentials_validation = true
+    }
+  }
+  ```
+
 4. Edit the [`./terraform/live/global_values.yaml`](./terraform/live/global_values.yaml) to suit your needs:
 
   ```yaml
