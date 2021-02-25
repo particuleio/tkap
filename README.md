@@ -23,7 +23,7 @@ work out of the box.
 ### Requirements
 
 * [Terraform](https://www.terraform.io/downloads.html)
-* [direnv](https://direnv.net/#basic-installation): available in every Linux distribution, :warning: do not forget the shell hook installation
+* [direnv](https://direnv.net/#basic-installation): available in every Linux distribution, :warning: do not forget the [shell hook installation](https://direnv.net/docs/hook.html)
 * [tfenv](https://github.com/cloudposse/tfenv)
 * [scalway-cli](https://github.com/scaleway/scaleway-cli) configured for your
     scaleway account
