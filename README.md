@@ -18,18 +18,114 @@ work out of the box.
 * :heavy_check_mark: Terraform implementation is available in the [`terraform`](./terraform) folder.
 * :construction: Terragrunt implementation is available in the [`terragrunt`](./terragrunt) folder.
 
-## Requirements
+## Terraform
 
-### Terraform
+### Requirements
 
 * [Terraform](https://www.terraform.io/downloads.html)
-* [direnv](https://direnv.net/): available in every Linux distribution
+* [direnv](https://direnv.net/#basic-installation): available in every Linux distribution, :warning: do not forget the shell hook installation
 * [tfenv](https://github.com/cloudposse/tfenv)
+* [scalway-cli](https://github.com/scaleway/scaleway-cli) configured for your
+    scaleway account
+* A [Scaleway object storage bucket](https://console.scaleway.com/object-storage/buckets) to store Terraform state files
+* (Optional) A [scaleway DNS zone](https://console.scaleway.com/domains/external) if you want to have dynamic DNS
 
-### Terragrunt
+### QuickStart
+
+This repository is a template that can
+[used](https://github.com/particuleio/tkap/generate) to deploy this repository
+in your own Github namespace.
+
+Terraform configuration is done inside the [`live`](./terraform/live) folder.
+
+1. Create a `credentials.sh` file that WILL NOT be commited to git with your
+   credentials (it is possible to use other means of authentication like aws
+   profile for the S3 credentials and scaleway cli configuration file for
+   scaleway provider, keep in mind that no matter how you do it, you need the
+   AWS credential for S3 backend and scaleway credentials loaded):
+
+  ```bash
+  export SCW_ACCESS_KEY=SCW_ACCESS_KEY
+  export AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID
+  export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+  export SCW_SECRET_KEY=SCW_SECRET_KEY
+  export SCW_DEFAULT_ORGANIZATION_ID=SCW_DEFAULT_ORGANIZATION_ID
+  export SCW_DEFAULT_PROJECT_ID=SCW_DEFAULT_PROJECT_ID
+  ```
+
+2. source the `credentials.sh` file
+
+  ```console
+  source credentials.sh
+  ```
+
+3. Add your Scaleway object storage bucket name in [`./terraform/live/shared/backend.tf`](./terraform/live/shared/backend.tf)
+
+4. Edit the [`./terraform/live/global_values.yaml`](./terraform/live/global_values.yaml) to suit your needs:
+
+  ```yaml
+  ---
+  default_domain_name: scw.particule.cloud
+  prefix: pio
+  project: tkap
+  ```
+
+5. Copy the demo environment:
+
+```console
+cp -ar demo-s3 production
+
+tree production
+ .
+├──  env_tags.yaml
+└──  fr-par
+   ├──  clusters
+   │  └──  full
+   │     ├──  cluster_values.yaml
+   │     ├──  kapsule
+   │     │  ├──  backend.tf -> ../../../../../shared/backend.tf
+   │     │  ├──  locals.tf -> ../../../../../shared/locals.tf
+   │     │  ├──  main.tf
+   │     │  ├──  scw-provider.tf -> ../../../../../shared/scw-provider.tf
+   │     │  └──  versions.tf
+   │     └──  kapsule-addons
+   │        ├──  backend.tf -> ../../../../../shared/backend.tf
+   │        ├──  data.tf
+   │        ├──  locals.tf -> ../../../../../shared/locals.tf
+   │        ├──  main.tf
+   │        └──  versions.tf
+   └──  region_values.yaml
+```
+
+6. Add environment name in `env_tags.yaml` to match your environment
+
+7. Inside `kapsule` folder run:
+  * `terraform init`
+  * `terraform plan`
+  * `terrafrom apply`
+
+8. To get the `kubeconfig` file for the cluster:
+
+  ```console
+  terraform output -raw kubeconfig
+  ```
+
+9. Inside `kapsule-addons` run:
+  * `terraform init`
+  * `terraform plan`
+  * `terrafrom apply`
+
+
+
+
+
+
+## Terragrunt
 
 * [Terraform](https://www.terraform.io/downloads.html)
 * [Terragrunt](https://github.com/gruntwork-io/terragrunt/releases)
+
+:construction: The Terragrunt part is still under development.
 
 ## Main purposes
 
