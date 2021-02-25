@@ -43,11 +43,12 @@ Terraform configuration is done inside the [`live`](./terraform/live) folder.
 
   ```bash
   export SCW_ACCESS_KEY=SCW_ACCESS_KEY
-  export AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID
-  export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
   export SCW_SECRET_KEY=SCW_SECRET_KEY
   export SCW_DEFAULT_ORGANIZATION_ID=SCW_DEFAULT_ORGANIZATION_ID
   export SCW_DEFAULT_PROJECT_ID=SCW_DEFAULT_PROJECT_ID
+
+  export AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID
+  export AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY
   ```
 
 2. source the `credentials.sh` file
@@ -77,6 +78,8 @@ Terraform configuration is done inside the [`live`](./terraform/live) folder.
   default_domain_name: scw.particule.cloud
   prefix: pio
   project: tkap
+  tf_state_bucket_region: fr-par
+  tf_state_bucket_name: tkap-terraform-remote-state
   ```
 
 5. Copy the demo environment:
