@@ -32,9 +32,9 @@ module "eks-addons" {
   cluster-name = local.cluster_name
 
   scaleway = {
-    scw_access_key              = local.scw_access_key
-    scw_secret_key              = local.scw_secret_key
-    scw_default_organization_id = local.scw_default_organization_id
+    scw_access_key              = var.scw_access_key
+    scw_secret_key              = var.scw_secret_key
+    scw_default_organization_id = var.scw_default_organization_id
   }
 
   cert-manager = {
