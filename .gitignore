@@ -3,3 +3,4 @@
 .terraform.d
 kubeconfig*
 .terraform.lock.hcl
+credentials.sh
