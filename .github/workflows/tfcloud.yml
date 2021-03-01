@@ -5,7 +5,7 @@ on:
     branches:
     - master
     paths:
-    - 'terraform/live/demo/fr-par/kapsule-tfcloud/**'
+    - 'terraform/live/demo-tfcloud/**'
     - '.github/workflows/tfcloud.yml'
   pull_request:
 
@@ -23,18 +23,19 @@ jobs:
       uses: actions/checkout@v2
 
     - name: 'asdf:install'
-      uses: asdf-vm/actions/install@v1.0.0
+      uses: asdf-vm/actions/install@v1.1.0
 
     - name: 'terraform:setup'
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_wrapper: true
-        terraform_version: 0.13.5
+        terraform_version: 0.14.7
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
     - name: 'terraform:fmt:kapsule'
       run: terraform fmt -check
-      working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
+      working-directory: terraform/live/demo-tfcloud/fr-par/clusters/full/kapsule
+
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -46,7 +47,7 @@ jobs:
 
     - name: 'terraform:init:kapsule'
       run: terraform init
-      working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
+      working-directory: terraform/live/demo-tfcloud/fr-par/clusters/full/kapsule
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -58,7 +59,7 @@ jobs:
 
     - name: 'terraform:plan:kapsule'
       run: terraform plan
-      working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
+      working-directory: terraform/live/demo-tfcloud/fr-par/clusters/full/kapsule
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -70,7 +71,7 @@ jobs:
 
     - name: 'terraform:apply:kapsule'
       run: terraform apply -auto-approve
-      working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
+      working-directory: terraform/live/demo-tfcloud/fr-par/clusters/full/kapsule
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -83,7 +84,7 @@ jobs:
 
     - name: 'terraform:destroy:kapsule'
       run: terraform destroy -auto-approve
-      working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
+      working-directory: terraform/live/demo-tfcloud/fr-par/clusters/full/kapsule
       if: "!contains(github.event.head_commit.message, '[ci keep]') && github.ref == 'refs/heads/master'"
       continue-on-error: true
       env:
@@ -97,7 +98,7 @@ jobs:
 
     - name: 'terraform:destroy:kapsule:failsafe'
       run: terraform destroy -auto-approve
-      working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
+      working-directory: terraform/live/demo-tfcloud/fr-par/clusters/full/kapsule
       if: "!contains(github.event.head_commit.message, '[ci keep]') && github.ref == 'refs/heads/master'"
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -110,9 +111,17 @@ jobs:
 
     - name: 'terraform:destroy:kapsule:cleanup-stale-state'
       run: terraform state list 2>/dev/null | xargs terraform state rm
-      working-directory: terraform/live/demo/fr-par/kapsule-tfcloud
+      working-directory: terraform/live/demo-tfcloud/fr-par/clusters/full/kapsule
       continue-on-error: true
       if: "!contains(github.event.head_commit.message, '[ci keep]') && github.ref == 'refs/heads/master'"
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+        SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+        SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+        SCW_DEFAULT_REGION: fr-par
+        SCW_DEFAULT_ZONE: fr-par-1
 
     - name: 'slack:success'
       if: success()
@@ -120,7 +129,7 @@ jobs:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       uses: voxmedia/github-action-slack-notify-build@v1
       with:
-        channel: notifications
+        channel: ${{ secrets.SLACK_CHANNEL }}
         status: SUCCESS
         color: good
 
@@ -130,6 +139,6 @@ jobs:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       uses: voxmedia/github-action-slack-notify-build@v1
       with:
-        channel: notifications
+        channel: ${{ secrets.SLACK_CHANNEL }}
         status: failure
         color: danger

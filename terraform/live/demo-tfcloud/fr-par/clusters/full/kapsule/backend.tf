@@ -3,7 +3,7 @@ terraform {
     organization = "particule"
 
     workspaces {
-      name = "tkap"
+      name = "kapsule-cluster"
     }
   }
 }

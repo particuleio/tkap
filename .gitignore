@@ -1,3 +1,6 @@
 .terragrunt-cache
 .terraform
-kubeconfig
+.terraform.d
+kubeconfig*
+.terraform.lock.hcl
+credentials.sh
