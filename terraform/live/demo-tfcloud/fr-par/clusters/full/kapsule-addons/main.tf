@@ -26,7 +26,7 @@ provider "helm" {
   }
 }
 
-module "eks-addons" {
+module "addons" {
   source = "particuleio/addons/kubernetes//modules/scaleway"
 
   cluster-name = local.cluster_name
@@ -144,7 +144,7 @@ module "eks-addons" {
 
 }
 
-output "eks-addons" {
-  value     = module.eks-addons
+output "addons" {
+  value     = module.addons
   sensitive = true
 }
