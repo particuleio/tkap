@@ -10,6 +10,7 @@ module "kapsule" {
   cluster_description = local.cluster_name
   kubernetes_version  = "1.20.4"
   cni_plugin          = "calico"
+  region              = yamldecode(file("../../../region_values.yaml"))["scw_region"]
 
   node_pools = {
     tkap = {
