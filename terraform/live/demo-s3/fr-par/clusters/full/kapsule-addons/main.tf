@@ -39,7 +39,7 @@ module "addons" {
 
   cert-manager = {
     enabled                   = true
-    acme_email                = "kevin@particule.io"
+    acme_email                = "tech@particule.io"
     acme_http01_enabled       = true
     acme_http01_ingress_class = "nginx"
     acme_dns01_enabled        = true
