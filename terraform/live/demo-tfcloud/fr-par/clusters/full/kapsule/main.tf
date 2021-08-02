@@ -5,7 +5,7 @@ locals {
 
 module "kapsule" {
   source              = "particuleio/kapsule/scaleway"
-  version             = "~> 2.0"
+  version             = "~> 3.0"
   cluster_name        = local.cluster_name
   cluster_description = local.cluster_name
   kubernetes_version  = "1.20.4"
