@@ -1,11 +1,11 @@
 include "root" {
-  path = find_in_parent_folders()
+  path           = find_in_parent_folders()
   expose         = true
   merge_strategy = "deep"
 }
 
 include "kapsule" {
-  path = "../../../../../../dependency-blocks/kapsule.hcl"
+  path           = "../../../../../../dependency-blocks/kapsule.hcl"
   expose         = true
   merge_strategy = "deep"
 }
