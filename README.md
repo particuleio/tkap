@@ -4,8 +4,9 @@
   <img src="images/logo.png">
 </p>
 
-[![tkap:mkdocs](https://github.com/particuleio/tkap/actions/workflows/mkdocs.yml/badge.svg)](https://github.com/particuleio/tkap/actions/workflows/mkdocs.yml)
 [![tkap](https://github.com/particuleio/tkap/actions/workflows/terraform.yml/badge.svg)](https://github.com/particuleio/tkap/actions/workflows/terraform.yml)
+[![tkap:mkdocs](https://github.com/particuleio/tkap/actions/workflows/mkdocs.yml/badge.svg)](https://github.com/particuleio/tkap/actions/workflows/mkdocs.yml)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 <!-- vim-markdown-toc GFM -->
 
