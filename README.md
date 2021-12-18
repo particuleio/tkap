@@ -4,6 +4,9 @@
   <img src="images/logo.png">
 </p>
 
+[![tkap:mkdocs](https://github.com/particuleio/tkap/actions/workflows/mkdocs.yml/badge.svg)](https://github.com/particuleio/tkap/actions/workflows/mkdocs.yml)
+[![tkap](https://github.com/particuleio/tkap/actions/workflows/terraform.yml/badge.svg)](https://github.com/particuleio/tkap/actions/workflows/terraform.yml)
+
 <!-- vim-markdown-toc GFM -->
 
   * [Requirements](#requirements)
