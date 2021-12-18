@@ -25,8 +25,9 @@ work out of the box.
 * [Terragrunt](https://github.com/gruntwork-io/terragrunt/releases)
 * [scalway-cli](https://github.com/scaleway/scaleway-cli) configured for your
     scaleway account
+* A [Terraform Cloud](https://app.terraform.io) to store Terraform state and
+    have state locking
 * (Optional) A [scaleway DNS zone](https://console.scaleway.com/domains/external) if you want to have dynamic DNS
-
 ## Pre-commit
 
 This repository use pre-commit hooks, please see
