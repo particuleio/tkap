@@ -4,128 +4,40 @@
   <img src="images/logo.png">
 </p>
 
-![terraform:env:demo:tfcloud](https://github.com/particuleio/tkap/workflows/terraform:env:demo:tfcloud/badge.svg)
-![terraform:env:demo:s3](https://github.com/particuleio/tkap/workflows/terraform:env:demo:s3/badge.svg)
-![tkap:mkdocs](https://github.com/particuleio/tkap/workflows/tkap:mkdocs/badge.svg)
+<!-- vim-markdown-toc GFM -->
 
-tKAP is a set of Terraform modules designed to get you everything
+  * [Requirements](#requirements)
+* [Pre-commit](#pre-commit)
+* [ASDF](#asdf)
+* [Main purposes](#main-purposes)
+* [What you get](#what-you-get)
+
+<!-- vim-markdown-toc -->
+
+tKAP is a set of Terraform/Terragrunt modules designed to get you everything
 you need to run a production Kapsule cluster on Scaleway Element. It ships with
 sensible defaults, and add a lot of common addons with their configurations that
 work out of the box.
 
-## Terraform
-
-* :heavy_check_mark: Terraform implementation is available in the [`terraform`](./terraform) folder.
-
 ### Requirements
 
 * [Terraform](https://www.terraform.io/downloads.html)
-* [direnv](https://direnv.net/#basic-installation): available in every Linux distribution, :warning: do not forget the [shell hook installation](https://direnv.net/docs/hook.html)
-* [tfenv](https://github.com/cloudposse/tfenv)
+* [Terragrunt](https://github.com/gruntwork-io/terragrunt/releases)
 * [scalway-cli](https://github.com/scaleway/scaleway-cli) configured for your
     scaleway account
-* A [Scaleway object storage bucket](https://console.scaleway.com/object-storage/buckets) to store Terraform state files
 * (Optional) A [scaleway DNS zone](https://console.scaleway.com/domains/external) if you want to have dynamic DNS
 
-### QuickStart
+## Pre-commit
 
-This repository is a template that can
-[used](https://github.com/particuleio/tkap/generate) to deploy this repository
-in your own Github namespace.
+This repository use pre-commit hooks, please see
+[this](https://github.com/antonbabenko/pre-commit-terraform#how-to-install) on
+how to setup tooling
 
-Terraform configuration is done inside the [`live`](./terraform/live) folder.
+## ASDF
 
-1. Create a `credentials.sh` file that WILL NOT be commited to git with your
-   credentials (it is possible to use other means of authentication like aws
-   profile for the S3 credentials and scaleway cli configuration file for
-   scaleway provider, keep in mind that no matter how you do it, you need the
-   AWS credential for S3 backend and scaleway credentials loaded):
-
-  ```bash
-  export SCW_ACCESS_KEY=SCW_ACCESS_KEY
-  export SCW_SECRET_KEY=SCW_SECRET_KEY
-  export SCW_DEFAULT_ORGANIZATION_ID=SCW_DEFAULT_ORGANIZATION_ID
-  export SCW_DEFAULT_PROJECT_ID=SCW_DEFAULT_PROJECT_ID
-
-  export AWS_ACCESS_KEY_ID=$SCW_ACCESS_KEY
-  export AWS_SECRET_ACCESS_KEY=$SCW_SECRET_KEY
-  ```
-
-2. source the `credentials.sh` file
-
-  ```console
-  source credentials.sh
-  ```
-
-3. Add your Scaleway object storage bucket name in [`./terraform/live/shared/backend.tf`](./terraform/live/shared/backend.tf)
-
-  ```hcl
-  terraform {
-    backend "s3" {
-      bucket                      = "tkap-terraform-remote-state"
-      region                      = "fr-par"
-      endpoint                    = "https://s3.fr-par.scw.cloud"
-      skip_region_validation      = true
-      skip_credentials_validation = true
-    }
-  }
-  ```
-
-4. Edit the [`./terraform/live/global_values.yaml`](./terraform/live/global_values.yaml) to suit your needs:
-
-  ```yaml
-  ---
-  default_domain_name: scw.particule.cloud
-  prefix: pio
-  project: tkap
-  tf_state_bucket_region: fr-par
-  tf_state_bucket_name: tkap-terraform-remote-state
-  ```
-
-5. Copy the demo environment:
-
-```console
-cp -ar demo-s3 production
-
-tree production
- .
-├──  env_tags.yaml
-└──  fr-par
-   ├──  clusters
-   │  └──  full
-   │     ├──  cluster_values.yaml
-   │     ├──  kapsule
-   │     │  ├──  backend.tf -> ../../../../../shared/backend.tf
-   │     │  ├──  locals.tf -> ../../../../../shared/locals.tf
-   │     │  ├──  main.tf
-   │     │  ├──  scw-provider.tf -> ../../../../../shared/scw-provider.tf
-   │     │  └──  versions.tf
-   │     └──  kapsule-addons
-   │        ├──  backend.tf -> ../../../../../shared/backend.tf
-   │        ├──  data.tf
-   │        ├──  locals.tf -> ../../../../../shared/locals.tf
-   │        ├──  main.tf
-   │        └──  versions.tf
-   └──  region_values.yaml
-```
-
-6. Add environment name in `env_tags.yaml` to match your environment
-
-7. Inside `kapsule` folder run:
-  * `terraform init`
-  * `terraform plan`
-  * `terrafrom apply`
-
-8. To get the `kubeconfig` file for the cluster:
-
-  ```console
-  terraform output -raw kubeconfig
-  ```
-
-9. Inside `kapsule-addons` run:
-  * `terraform init`
-  * `terraform plan`
-  * `terrafrom apply`
+[ASDF](https://asdf-vm.com/) is a package manager which is great for managing
+cloud native tooling. More info [here](https://particule.io/blog/asdf/)(eg.
+French).
 
 ## Main purposes
 
