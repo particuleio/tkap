@@ -11,7 +11,7 @@ include "kapsule" {
 }
 
 terraform {
-  source = "github.com/particuleio/terraform-kubernetes-addons.git//modules/scaleway?ref=v2.24.0"
+  source = "github.com/particuleio/terraform-kubernetes-addons.git//modules/scaleway?ref=v2.40.1"
 }
 
 generate "provider" {
@@ -39,6 +39,7 @@ inputs = {
   cert-manager = {
     enabled             = true
     acme_http01_enabled = true
+    acme_http01_ingress_class = "nginx"
     extra_values        = <<-EXTRA_VALUES
       ingressShim:
         defaultIssuerName: letsencrypt
@@ -49,6 +50,19 @@ inputs = {
 
   external-dns = {
     enabled = true
+  }
+
+  # For this to work:
+  # * GITHUB_TOKEN should be set
+  flux2 = {
+    enabled               = false
+    target_path           = "gitops/clusters/${include.root.locals.merged.env}/${include.root.locals.merged.name}"
+    github_url            = "ssh://git@github.com/particuleio/tkap"
+    repository            = "repo"
+    branch                = "main"
+    repository_visibility = "private"
+    version               = "v0.24.1"
+    auto_image_update     = true
   }
 
   ingress-nginx = {
@@ -80,29 +94,28 @@ inputs = {
     thanos_bucket_force_destroy = false
     default_global_requests     = true
     extra_values                = <<-EXTRA_VALUES
-      nodeExporter:
-        enabled: false
       grafana:
-        enabled: false
-      prometheus:
-        thanosIngress:
-          enabled: true
-          ingressClassName: nginx
+        image:
+          tag: 8.3.3
+        deploymentStrategy:
+          type: Recreate
+        ingress:
           annotations:
-            cert-manager.io/cluster-issuer: "letsencrypt"
-            nginx.ingress.kubernetes.io/ssl-redirect: "true"
-            nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
-            nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
-            nginx.ingress.kubernetes.io/auth-tls-secret: "telemetry/thanos-ca"
+            kubernetes.io/tls-acme: "true"
+          ingressClassName: nginx
+          enabled: true
           hosts:
-          - thanos-sidecar.${include.root.locals.merged.name}.${include.root.locals.merged.default_domain_name}
-          paths:
-          - /
-          pathType: ImplementationSpecific
+            - telemetry.${include.root.locals.merged.default_domain_name}
           tls:
-          - secretName: thanos-sidecar.${include.root.locals.merged.name}.${include.root.locals.merged.default_domain_name}
-            hosts:
-            - thanos-sidecar.${include.root.locals.merged.name}.${include.root.locals.merged.default_domain_name}
+            - secretName: ${include.root.locals.merged.default_domain_name}
+              hosts:
+                - telemetry.${include.root.locals.merged.default_domain_name}
+        persistence:
+          enabled: true
+          accessModes:
+            - ReadWriteOnce
+          size: 1Gi
+      prometheus:
         prometheusSpec:
           scrapeInterval: 60s
           replicas: 2
@@ -130,8 +143,64 @@ inputs = {
         alertmanagerSpec:
           replicas: 2
           podAntiAffinity: "hard"
+        templateFiles:
+          template_1.tmpl: |-
+            {{ define "slack.title" -}}
+              [{{ .Status | toUpper -}}
+              {{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{- end -}}
+              ] {{ .CommonLabels.alertname }}
+            {{- end }}
+            {{ define "slack.color" -}}
+                {{ if eq .Status "firing" -}}
+                    {{ if eq .CommonLabels.severity "warning" -}}
+                        warning
+                    {{- else if eq .CommonLabels.severity "critical" -}}
+                        danger
+                    {{- else -}}
+                        #439FE0
+                    {{- end -}}
+                {{ else -}}
+                good
+                {{- end }}
+            {{- end }}
+        config:
+          global:
+            resolve_timeout: 5m
+            slack_api_url: "https://hooks.slack.com/services/WEBHOOK"
+          route:
+            group_by: ['job']
+            group_wait: 30s
+            group_interval: 5m
+            repeat_interval: 12h
+            receiver: 'null'
+            routes:
+            - match:
+                alertname: Watchdog
+              receiver: 'null'
+            - match:
+              receiver: 'slack'
+              continue: true
+          receivers:
+          - name: 'null'
+          - name: 'slack'
+            slack_configs:
+            - channel: "#alerts"
+              send_resolved: true
+              username: "${dependency.kapsule.outputs.name}"
+              icon_url: "https://avatars3.githubusercontent.com/u/3380462"
+              color: '{{ template "slack.color" . }}'
+              title: '{{ template "slack.title" . }}'
+              text: |-
+               {{ range .Alerts -}}
+               *Alert:* {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+               *Description:* {{ .Annotations.description }}
+               *Details:*
+                 {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+                 {{ end }}
+               {{ end }}
       EXTRA_VALUES
   }
+
   thanos = {
     enabled                 = true
     namespace               = "telemetry"
@@ -139,21 +208,6 @@ inputs = {
     default_global_requests = true
     default_global_limits   = false
     extra_values            = <<-EXTRA_VALUES
-      query:
-        enabled: true
-        ingress:
-          grpc:
-            enabled: true
-            annotations:
-              kubernetes.io/tls-acme: "true"
-              nginx.ingress.kubernetes.io/ssl-redirect: "true"
-              nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
-              nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
-              nginx.ingress.kubernetes.io/auth-tls-secret: "telemetry/thanos-ca"
-            hostname: thanos.${include.root.locals.merged.name}.${include.root.locals.merged.default_domain_name}
-            tls: true
-      queryFrontend:
-        enabled: false
       compactor:
         retentionResolution5m: 90d
         persistence:

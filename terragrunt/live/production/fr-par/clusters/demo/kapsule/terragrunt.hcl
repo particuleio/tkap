@@ -5,7 +5,7 @@ include "root" {
 }
 
 terraform {
-  source = "github.com/particuleio/terraform-scaleway-kapsule?ref=v3.0.2"
+  source = "github.com/particuleio/terraform-scaleway-kapsule?ref=v4.0.0"
 
   after_hook "kubeconfig" {
     commands = ["apply"]
@@ -16,8 +16,9 @@ terraform {
 inputs = {
   cluster_name        = include.root.locals.full_name
   cluster_description = include.root.locals.full_name
-  kubernetes_version  = "1.22.2"
+  kubernetes_version  = "1.23.0"
   cni_plugin          = "calico"
+  delete_additional_resources = true
 
   node_pools = {
     default-fr-par-1 = {

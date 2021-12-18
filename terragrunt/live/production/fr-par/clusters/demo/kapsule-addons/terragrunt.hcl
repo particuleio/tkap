@@ -11,7 +11,7 @@ include "kapsule" {
 }
 
 terraform {
-  source = "github.com/particuleio/terraform-kubernetes-addons.git//modules/scaleway?ref=v2.17.0"
+  source = "github.com/particuleio/terraform-kubernetes-addons.git//modules/scaleway?ref=v2.40.1"
 }
 
 generate "provider" {
@@ -39,6 +39,7 @@ inputs = {
   cert-manager = {
     enabled             = true
     acme_http01_enabled = true
+    acme_http01_ingress_class = "nginx"
     extra_values        = <<-EXTRA_VALUES
       ingressShim:
         defaultIssuerName: letsencrypt
@@ -61,7 +62,7 @@ inputs = {
     repository            = "repo"
     branch                = "main"
     repository_visibility = "private"
-    version               = "v0.18.1"
+    version               = "v0.24.1"
     auto_image_update     = true
   }
 

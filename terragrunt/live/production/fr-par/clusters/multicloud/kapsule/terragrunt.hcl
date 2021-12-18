@@ -5,7 +5,7 @@ include "root" {
 }
 
 terraform {
-  source = "github.com/particuleio/terraform-scaleway-kapsule?ref=v3.0.2"
+  source = "github.com/particuleio/terraform-scaleway-kapsule?ref=v4.0.0"
 
   after_hook "kubeconfig" {
     commands = ["apply"]
@@ -16,29 +16,33 @@ terraform {
 inputs = {
   cluster_name        = include.root.locals.full_name
   cluster_description = include.root.locals.full_name
-  kubernetes_version  = "1.22.2"
-  cni_plugin          = "calico"
+  cluster_type = "multicloud"
+  kubernetes_version  = "1.23.0"
 
   node_pools = {
     default-fr-par-1 = {
       zone                = "fr-par-1"
       size                = 1
-      max_size            = 5
+      max_size            = 1
       min_size            = 1
       autoscaling         = true
-      wait_for_pool_ready = false
+      wait_for_pool_ready = true
     }
-    tainted-fr-par-1 = {
-      zone                = "fr-par-1"
+    default-fr-par-2 = {
+      zone                = "fr-par-2"
       size                = 1
-      max_size            = 10
+      max_size            = 1
       min_size            = 1
       autoscaling         = true
-      wait_for_pool_ready = false
-      tags = [
-        "role=dedicated",
-        "taint=dedicated=true:NoSchedule",
-      ]
+      wait_for_pool_ready = true
+    }
+    default-fr-par-3 = {
+      zone                = "fr-par-3"
+      size                = 1
+      max_size            = 1
+      min_size            = 1
+      autoscaling         = true
+      wait_for_pool_ready = true
     }
   }
 }

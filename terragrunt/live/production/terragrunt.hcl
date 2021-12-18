@@ -44,3 +44,13 @@ generate "provider-scw" {
     }
   EOF
 }
+
+generate "provider-github" {
+  path      = "provider-github.tf"
+  if_exists = "overwrite_terragrunt"
+  contents  = <<-EOF
+    provider "github" {
+      owner = "${local.merged.github_owner}"
+    }
+  EOF
+}
