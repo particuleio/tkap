@@ -3,3 +3,5 @@ terraform 1.1.0
 terraform-docs 0.16.0
 tflint 0.33.1
 tfsec 0.61.3
+scaleway-cli 2.4.0
+flux2 0.24.1
