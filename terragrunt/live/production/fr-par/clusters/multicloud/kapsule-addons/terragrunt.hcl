@@ -37,10 +37,10 @@ inputs = {
   }
 
   cert-manager = {
-    enabled             = true
-    acme_http01_enabled = true
+    enabled                   = true
+    acme_http01_enabled       = true
     acme_http01_ingress_class = "nginx"
-    extra_values        = <<-EXTRA_VALUES
+    extra_values              = <<-EXTRA_VALUES
       ingressShim:
         defaultIssuerName: letsencrypt
         defaultIssuerKind: ClusterIssuer

@@ -14,10 +14,10 @@ terraform {
 }
 
 inputs = {
-  cluster_name        = include.root.locals.full_name
-  cluster_description = include.root.locals.full_name
-  kubernetes_version  = "1.23.0"
-  cni_plugin          = "calico"
+  cluster_name                = include.root.locals.full_name
+  cluster_description         = include.root.locals.full_name
+  kubernetes_version          = "1.23.0"
+  cni_plugin                  = "calico"
   delete_additional_resources = true
 
   node_pools = {

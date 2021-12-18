@@ -16,7 +16,7 @@ terraform {
 inputs = {
   cluster_name        = include.root.locals.full_name
   cluster_description = include.root.locals.full_name
-  cluster_type = "multicloud"
+  cluster_type        = "multicloud"
   kubernetes_version  = "1.23.0"
 
   node_pools = {
