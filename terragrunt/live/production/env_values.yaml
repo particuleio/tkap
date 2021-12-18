@@ -1,0 +1,4 @@
+---
+default_domain_name: scw.particule.io
+env: production
+scw_project_name: tkap

@@ -1,1 +1,0 @@
-../../../../../shared/scw-provider.tf
