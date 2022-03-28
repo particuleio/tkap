@@ -23,7 +23,7 @@
   "automergeType": "pr-comment",
   "automergeComment": "renovate:merge",
   "reviewers": [
-    "team:team"
+    "particuleio:team"
   ],
   "prHourlyLimit": 0,
   "packageRules": [
