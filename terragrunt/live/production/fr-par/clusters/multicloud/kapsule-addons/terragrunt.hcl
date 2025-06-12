@@ -11,7 +11,7 @@ include "kapsule" {
 }
 
 terraform {
-  source = "github.com/particuleio/terraform-kubernetes-addons.git//modules/scaleway?ref=v6.2.0"
+  source = "github.com/particuleio/terraform-kubernetes-addons.git//modules/scaleway?ref=v19.0.0"
 }
 
 generate "provider" {
