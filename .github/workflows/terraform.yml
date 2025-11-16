@@ -47,7 +47,7 @@ jobs:
         terraform_version: ${{ secrets.TERRAFORM_VERSION }}
 
     - name: 'asdf:install'
-      uses: asdf-vm/actions/install@v1.1.0
+      uses: asdf-vm/actions/install@v4.0.1
 
     - uses: actions/setup-python@v3
 
