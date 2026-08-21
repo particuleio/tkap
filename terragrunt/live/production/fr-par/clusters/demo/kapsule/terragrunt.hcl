@@ -5,7 +5,7 @@ include "root" {
 }
 
 terraform {
-  source = "github.com/particuleio/terraform-scaleway-kapsule?ref=v5.0.0"
+  source = "github.com/particuleio/terraform-scaleway-kapsule?ref=v7.3.0"
 
   after_hook "kubeconfig" {
     commands = ["apply"]
